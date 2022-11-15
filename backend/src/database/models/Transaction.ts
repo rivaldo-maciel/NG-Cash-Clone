@@ -13,11 +13,8 @@ class Transaction {
   @Column({ name: 'debited_account_id' })
   debitedAccountId: number;
 
-  @Column()
-  creditedAccountId: number;
-
   @Column({ name: 'credited_account_id' })
-  accountId: number;
+  creditedAccountId: number;
 
   @Column()
   value: number;
