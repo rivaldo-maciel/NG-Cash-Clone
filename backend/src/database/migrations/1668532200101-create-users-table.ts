@@ -37,7 +37,9 @@ export class createUsersTable1668532200101 implements MigrationInterface {
         new TableForeignKey({
             columnNames: ['account_id'],
             referencedTableName: 'accounts',
-            referencedColumnNames: ['id']
+            referencedColumnNames: ['id'],
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE'
         })
     )
   }

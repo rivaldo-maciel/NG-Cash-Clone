@@ -1,4 +1,9 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey
+} from 'typeorm';
 
 export class createTransactionsTable1668532382459
   implements MigrationInterface
@@ -32,10 +37,29 @@ export class createTransactionsTable1668532382459
           },
           {
             name: 'created_at',
-            type: 'timestamps',
-            isGenerated: true
+            type: 'timestamp',
           }
         ]
+      })
+    );
+
+    await queryRunner.createForeignKey(
+      'transactions',
+      new TableForeignKey({
+        columnNames: ['debited_account_id'],
+        referencedTableName: 'accounts',
+        referencedColumnNames: ['id']
+      })
+    );
+
+    await queryRunner.createForeignKey(
+      'transactions',
+      new TableForeignKey({
+        columnNames: ['credited_account_id'],
+        referencedTableName: 'accounts',
+        referencedColumnNames: ['id'],
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       })
     );
   }
