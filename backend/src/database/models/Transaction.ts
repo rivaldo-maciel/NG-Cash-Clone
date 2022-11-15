@@ -1,6 +1,5 @@
 import {
   Column,
-  CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn
 } from 'typeorm';
@@ -19,8 +18,8 @@ class Transaction {
   @Column()
   value: number;
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  @Column()
+  createdAt?: Date;
 }
 
 export default Transaction;
