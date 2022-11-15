@@ -7,18 +7,25 @@ class AccountServices extends Services<Account> implements IAccountServices {
   public async create(entity: Account): Promise<Account> {
     return await this.repository.save(entity);
   }
+
   public async getAll(): Promise<Account[]> {
     return await this.repository.find();
   }
+
+  public async getOne(id: number): Promise<Account> {
+    return this.repository.findOne({ where: { id }});
+  }
+
   public async update(
     id: number,
     alteration: {
       id?: number;
-      balance?: string;
+      balance?: number;
     }
   ): Promise<UpdateResult> {
     return await this.repository.update(id, alteration);
   }
+
   public async remove(id: number): Promise<DeleteResult> {
     return await this.repository.delete(id);
   }

@@ -8,7 +8,7 @@ import {
 @Entity()
 class Transaction {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column({ name: 'debited_account_id' })
   debitedAccountId: number;

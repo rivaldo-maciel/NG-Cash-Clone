@@ -3,10 +3,10 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 class Account {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column({ type: 'decimal', precision: 15, scale: 2, default: 0 })
-  balance: string;
+  balance: number;
 }
 
 export default Account;

@@ -33,6 +33,8 @@ abstract class Services<T, U = void> implements IServices<T> {
 
   public abstract getAll(): Promise<T[]>;
 
+  public abstract getOne(id: number): Promise<T>;
+
   public abstract update(
     id: number,
     alteration: QueryDeepPartialEntity<T>
