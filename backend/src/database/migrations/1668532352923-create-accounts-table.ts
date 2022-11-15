@@ -17,7 +17,7 @@ export class createAccountsTable1668532352923 implements MigrationInterface {
             name: 'balance',
             type: 'decimal',
             isNullable: false
-          },
+          }
         ]
       })
     );
