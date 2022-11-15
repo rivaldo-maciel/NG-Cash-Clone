@@ -2,12 +2,14 @@ import {
   DataSource,
   DeleteResult,
   EntityTarget,
+  FindOneOptions,
   Repository,
   UpdateResult
 } from 'typeorm';
 import IServices from './interfaces/IServices';
 import { z, ZodRawShape } from 'zod';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import EntityNotFoundError from '../errors/EntityNotFoundError';
 
 abstract class Services<T, U = void> implements IServices<T> {
   private dataSource: DataSource;
@@ -41,6 +43,11 @@ abstract class Services<T, U = void> implements IServices<T> {
   ): Promise<UpdateResult>;
 
   public abstract remove(id: number): Promise<DeleteResult>;
+
+  public async checkExistence(id: number): Promise<void> {
+    const entity = await this.repository.findOne({ where: { id } } as FindOneOptions);
+    if (!entity) throw new EntityNotFoundError();
+  }
 }
 
 export default Services;

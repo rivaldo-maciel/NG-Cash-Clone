@@ -23,10 +23,12 @@ class AccountServices extends Services<Account> implements IAccountServices {
       balance?: number;
     }
   ): Promise<UpdateResult> {
+    await this.checkExistence(id);
     return await this.repository.update(id, alteration);
   }
 
   public async remove(id: number): Promise<DeleteResult> {
+    await this.checkExistence(id);
     return await this.repository.delete(id);
   }
 }
