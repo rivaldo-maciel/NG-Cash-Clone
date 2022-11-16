@@ -5,6 +5,7 @@ import Services from './Services';
 
 class AccountServices extends Services<Account> implements IAccountServices {
   public async create(entity: Account): Promise<Account> {
+    this.schema.parse(entity);
     return await this.repository.save(entity);
   }
 

@@ -5,6 +5,10 @@ import IControllers from './interfaces/IControllers';
 class Controllers<T> implements IControllers<T> {
   protected services: IServices<T>;
 
+  constructor(services: IServices<T>) {
+    this.services = services;
+  }
+
   public async create(req: Request, res: Response, next: NextFunction): Promise<Response> {
     try {
       const entity = req.body;

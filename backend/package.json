@@ -12,6 +12,7 @@
    "author": "Rivaldo Maciel",
    "license": "ISC",
    "devDependencies": {
+      "@types/jsonwebtoken": "^8.5.9",
       "@types/node": "^16.11.10",
       "ts-node": "10.7.0",
       "typescript": "4.5.2"

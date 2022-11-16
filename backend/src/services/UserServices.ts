@@ -9,6 +9,7 @@ class UserServices extends Services<User, Account> implements IUserServices {
   protected repositorySupport: Repository<Account>;
 
   public async create(entity: User): Promise<User> {
+    this.schema.parse(entity);
     await this.checkUserNameExistence(entity.userName);
     const createdUser = await this.repository.save({ ...entity, accountId: null });
     const { id: accountId } = await this.repositorySupport.save({ balance: 100 });
