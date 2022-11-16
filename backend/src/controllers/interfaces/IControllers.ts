@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-interface IControllers {
+interface IControllers<T> {
   create(req: Request, res: Response, next: NextFunction): Promise<Response>;
 
   getAll(_req: Request, res: Response, next: NextFunction): Promise<Response>;

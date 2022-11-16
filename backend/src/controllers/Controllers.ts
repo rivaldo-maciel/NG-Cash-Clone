@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import IServices from '../services/interfaces/IServices';
 import IControllers from './interfaces/IControllers';
 
-class Controllers<T> implements IControllers {
+class Controllers<T> implements IControllers<T> {
   protected services: IServices<T>;
 
   public async create(req: Request, res: Response, next: NextFunction): Promise<Response> {
