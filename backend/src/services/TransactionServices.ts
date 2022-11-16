@@ -6,8 +6,7 @@ import Services from './Services';
 class TransactionServices extends Services<Transaction> implements ITransaction {
 
   public async create(entity: Transaction): Promise<Transaction> {
-    const createdAt = Date.now();
-    return await this.repository.save({ ...entity, createdAt });
+    return await this.repository.save(entity);
   }
 
   public async getAll(): Promise<Transaction[]> {

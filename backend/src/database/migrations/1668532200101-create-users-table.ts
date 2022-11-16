@@ -26,7 +26,7 @@ export class createUsersTable1668532200101 implements MigrationInterface {
           {
             name: 'account_id',
             type: 'int',
-            isNullable: false,
+            isNullable: true,
           }
         ]
       })
