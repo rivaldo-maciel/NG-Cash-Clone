@@ -17,6 +17,7 @@ import userSchema from './schemas/UserSchema';
 import AccountServices from './services/AccountServices';
 import TransactionServices from './services/TransactionServices';
 import UserServices from './services/UserServices';
+import 'dotenv/config';
 
 const app = new App();
 
@@ -38,7 +39,7 @@ app.routes('transactions', transactionRouter.router);
 const errorMiddleware = new ErrorMiddleware().errorMiddleware;
 app.useErrorMiddleware(errorMiddleware);
 
-const PORT = 3001;
+const PORT = Number(process.env.APP_PORT);
 
 app.start(PORT);
 
