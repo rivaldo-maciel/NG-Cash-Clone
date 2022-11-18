@@ -21,7 +21,8 @@ class UserServices extends Services<User, Account> implements IUserServices {
     return await this.repository.find();
   }
 
-  public async getOne(id: number): Promise<User> {
+  public async getOne(id: number, userId: number): Promise<User> {
+    this.checkUserAuth(id, userId);
     return this.repository.findOne({ where: { id }});
   }
 
@@ -32,14 +33,17 @@ class UserServices extends Services<User, Account> implements IUserServices {
       userName?: string;
       password?: string;
       accountId?: number;
-    }
+    },
+    userId: number
   ): Promise<UpdateResult> {
     await this.checkExistence(id);
+    this.checkUserAuth(id, userId);
     return await this.repository.update(id, alteration);
   }
 
-  public async remove(id: number): Promise<DeleteResult> {
+  public async remove(id: number, userId: number): Promise<DeleteResult> {
     await this.checkExistence(id);
+    this.checkUserAuth(id, userId);
     return this.repository.delete(id);
   }
 

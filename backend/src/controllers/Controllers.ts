@@ -1,5 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import IServices from '../services/interfaces/IServices';
+import { RequestWithUserId } from '../types/express';
 import IControllers from './interfaces/IControllers';
 
 class Controllers<T> implements IControllers<T> {
@@ -9,17 +10,18 @@ class Controllers<T> implements IControllers<T> {
     this.services = services;
   }
 
-  public async create(req: Request, res: Response, next: NextFunction): Promise<Response> {
+  public async create(req: RequestWithUserId, res: Response, next: NextFunction): Promise<Response> {
     try {
       const entity = req.body;
-      const createdEntity = await this.services.create(entity);
+      const user = req.user;
+      const createdEntity = await this.services.create(entity, user.id);
       return res.status(201).json(createdEntity);
     } catch (err: unknown) {
       next(err);
     }
   }
 
-  public async getAll(_req: Request, res: Response, next: NextFunction): Promise<Response> {
+  public async getAll(_req: RequestWithUserId, res: Response, next: NextFunction): Promise<Response> {
     try {
       const allEntities = await this.services.getAll();
       return res.status(200).json(allEntities);
@@ -28,31 +30,34 @@ class Controllers<T> implements IControllers<T> {
     }
   }
 
-  public async getOne(req: Request, res: Response, next: NextFunction): Promise<Response> {
+  public async getOne(req: RequestWithUserId, res: Response, next: NextFunction): Promise<Response> {
     try {
       const { id } = req.params;
-      const entity = await this.services.getOne(Number(id));
+      const user = req.user;
+      const entity = await this.services.getOne(Number(id), Number(user.id));
       return res.status(200).json(entity);
     } catch (err: unknown) {
       next(err);
     }
   }
 
-  public async update(req: Request, res: Response, next: NextFunction): Promise<Response> {
+  public async update(req: RequestWithUserId, res: Response, next: NextFunction): Promise<Response> {
     try {
       const { id } = req.params;
       const alteration = req.body;
-      const updateResult = await this.services.update(Number(id), alteration); 
+      const user = req.user;
+      const updateResult = await this.services.update(Number(id), alteration, Number(user.id)); 
       return res.status(200).json(updateResult);
     } catch (err: unknown) {
       next(err);
     }
   }
 
-  public async remove(req: Request, res: Response, next: NextFunction): Promise<Response> {
+  public async remove(req: RequestWithUserId, res: Response, next: NextFunction): Promise<Response> {
     try {
       const { id } = req.params;
-      const deleteResult = await this.services.remove(Number(id));
+      const user = req.user;
+      const deleteResult = await this.services.remove(Number(id), Number(user.id));
       return res.status(200).json(deleteResult);
     } catch (err: unknown) {
       next(err);

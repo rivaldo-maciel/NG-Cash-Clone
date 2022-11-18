@@ -16,7 +16,10 @@ class AuthMiddleware {
         if (err) {
           throw err;
         }
-        req.userId = decoded.id;
+        req.user = {
+          id: decoded.id,
+          accountId: decoded.accountId
+        }
       });
       next();
     } catch (e: unknown) {

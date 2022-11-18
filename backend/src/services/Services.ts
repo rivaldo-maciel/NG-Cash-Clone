@@ -10,6 +10,7 @@ import IServices from './interfaces/IServices';
 import { z, ZodRawShape } from 'zod';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import EntityNotFoundError from '../errors/EntityNotFoundError';
+import UnauthorizedError from '../errors/UnauthorizedError';
 
 abstract class Services<T, U = void> implements IServices<T> {
   private dataSource: DataSource;
@@ -31,22 +32,29 @@ abstract class Services<T, U = void> implements IServices<T> {
     }
   }
 
-  public abstract create(entity: T): Promise<T>;
+  public abstract create(entity: T, userId?: number): Promise<T>;
 
   public abstract getAll(): Promise<T[]>;
 
-  public abstract getOne(id: number): Promise<T>;
+  public abstract getOne(id: number, userId: number): Promise<T>;
 
   public abstract update(
     id: number,
-    alteration: QueryDeepPartialEntity<T>
+    alteration: QueryDeepPartialEntity<T>,
+    userId: number
   ): Promise<UpdateResult>;
 
-  public abstract remove(id: number): Promise<DeleteResult>;
+  public abstract remove(id: number, userId: number): Promise<DeleteResult>;
 
   public async checkExistence(id: number): Promise<void> {
     const entity = await this.repository.findOne({ where: { id } } as FindOneOptions);
     if (!entity) throw new EntityNotFoundError();
+  }
+
+  public async checkUserAuth(id: number, userId: number): Promise<void> {
+    if (id !== userId) {
+      throw new UnauthorizedError();
+    }
   }
 }
 
