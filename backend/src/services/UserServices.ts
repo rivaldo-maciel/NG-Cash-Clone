@@ -11,7 +11,7 @@ class UserServices extends Services<User, Account> implements IUserServices {
   public async create(entity: User): Promise<User> {
     this.schema.parse(entity);
     await this.checkUserNameExistence(entity.userName);
-    const createdUser = await this.repository.save({ ...entity, accountId: null });
+    const createdUser = await this.repository.save({ ...entity, accountId: 0 });
     const { id: accountId } = await this.repositorySupport.save({ balance: 100 });
     await this.repository.update(createdUser.id, { accountId });
     return { ...createdUser, accountId };
@@ -44,7 +44,7 @@ class UserServices extends Services<User, Account> implements IUserServices {
   }
 
   public async checkUserNameExistence(userName: string): Promise<void> {
-    const user = await this.repository.find({ where: { userName } });
+    const user = await this.repository.findOne({ where: { userName } });
     if (user) throw new UserNameDuplicateError();
   }
 }

@@ -22,10 +22,6 @@ class App {
     this.express.use(middleware);
   }
 
-  public useJwtMiddleware(jwtMiddleware: RequestHandler) {
-    this.express.use(jwtMiddleware);
-  }
-
   public start(PORT: number): void {
     this.express.listen(PORT, () => {
       console.log(`Server running on port: ${PORT}`);

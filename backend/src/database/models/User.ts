@@ -12,7 +12,7 @@ class User {
   password: string;
 
   @Column({ name: 'account_id' })
-  accountId: number;
+  accountId?: number;
 }
 
 export default User;

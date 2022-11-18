@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
-import GenericError from '../errors/GenericError';
 import { JsonWebTokenError } from 'jsonwebtoken';
+import GenericError from '../errors/GenericError';
 
 class ErrorMiddleware {
   public async errorMiddleware(
@@ -11,7 +11,6 @@ class ErrorMiddleware {
     _next: NextFunction
   ): Promise<Response> {
     console.log(err);
-    
     if (err instanceof GenericError) {
       return res.status(err.status).json({ message: err.message });
     }

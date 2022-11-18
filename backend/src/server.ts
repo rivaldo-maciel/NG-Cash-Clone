@@ -1,40 +1,49 @@
-import { Router } from 'express';
 import App from '../app';
-import AccountControllers from './controllers/AccountControllers';
-import TransactionControllers from './controllers/TransactionControllers';
-import UserControllers from './controllers/UserControllers';
+import { Router } from 'express';
 import { AppDataSource } from './data-source';
-import Account from './database/models/Account';
-import Transaction from './database/models/Transaction';
-import User from './database/models/User';
-import ErrorMiddleware from './middlewares/ErrorMiddleware';
-import AccountRouter from './routers/AccountRouter';
-import TransactionRouter from './routers/TransactionRouter';
-import UserRouter from './routers/UserRouter';
-import accountSchema from './schemas/AccountSchema';
-import transactionSchema from './schemas/TransactionSchema';
-import userSchema from './schemas/UserSchema';
-import AccountServices from './services/AccountServices';
-import TransactionServices from './services/TransactionServices';
-import UserServices from './services/UserServices';
+import { Account, Transaction, User } from './database/models';
+import { AccountServices, TransactionServices, UserServices } from './services';
+import {
+  AccountControllers,
+  TransactionControllers,
+  UserControllers
+} from './controllers';
+import { AccountRouter, TransactionRouter, UserRouter } from './routers';
+import { accountSchema, transactionSchema, userSchema } from './schemas';
+import { ErrorMiddleware } from './middlewares';
+
 import 'dotenv/config';
+import AuthMiddleware from './middlewares/AuthMiddleware';
 
 const app = new App();
+const authMiddleware = new AuthMiddleware().verifyToken;
 
-const userServices = new UserServices(AppDataSource, User, userSchema);
+const userServices = new UserServices(AppDataSource, User, userSchema, Account);
 const userControllers = new UserControllers(userServices);
-const userRouter = new UserRouter(Router(), userControllers);
-app.routes('users', userRouter.router);
+const userRouter = new UserRouter(Router(), userControllers, authMiddleware);
+app.routes('/users', userRouter.router);
 
-const accountServices = new AccountServices(AppDataSource, Account, accountSchema);
+const accountServices = new AccountServices(
+  AppDataSource,
+  Account,
+  accountSchema
+);
 const accountControllers = new AccountControllers(accountServices);
-const accountRouter = new AccountRouter(Router(), accountControllers);
-app.routes('accounts', accountRouter.router);
+const accountRouter = new AccountRouter(Router(), accountControllers, authMiddleware);
+app.routes('/accounts', accountRouter.router);
 
-const transactionServices = new TransactionServices(AppDataSource, Transaction, transactionSchema);
+const transactionServices = new TransactionServices(
+  AppDataSource,
+  Transaction,
+  transactionSchema
+);
 const transactionControllers = new TransactionControllers(transactionServices);
-const transactionRouter = new TransactionRouter(Router(), transactionControllers);
-app.routes('transactions', transactionRouter.router);
+const transactionRouter = new TransactionRouter(
+  Router(),
+  transactionControllers,
+  authMiddleware
+);
+app.routes('/transactions', transactionRouter.router);
 
 const errorMiddleware = new ErrorMiddleware().errorMiddleware;
 app.useErrorMiddleware(errorMiddleware);
@@ -42,7 +51,3 @@ app.useErrorMiddleware(errorMiddleware);
 const PORT = Number(process.env.APP_PORT);
 
 app.start(PORT);
-
-
-
-
