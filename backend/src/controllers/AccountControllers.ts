@@ -23,7 +23,7 @@ class AccountControllers extends Controllers<Account> implements IAccountControl
     try {
       const user = req.user;
       const infos = req.body;
-      await this.services.transfer(Number(infos.value), user.accountId, infos.creditedAccountId);
+      await this.services.transfer(Number(infos.value), user.accountId, infos.creditedUserName);
       return res.status(200).json({ message: 'successful transfer!'});
     } catch (err: unknown) {
       next(err);

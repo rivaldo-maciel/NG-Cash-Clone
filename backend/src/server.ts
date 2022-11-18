@@ -14,11 +14,12 @@ import { ErrorMiddleware } from './middlewares';
 
 import 'dotenv/config';
 import AuthMiddleware from './middlewares/AuthMiddleware';
+import transferSchema from './schemas/TransferSchema';
 
 const app = new App();
 const authMiddleware = new AuthMiddleware().verifyToken;
 
-const userServices = new UserServices(AppDataSource, User, userSchema, Account);
+const userServices = new UserServices(AppDataSource, User, userSchema, null, Account);
 const userControllers = new UserControllers(userServices);
 const userRouter = new UserRouter(Router(), userControllers, authMiddleware);
 app.routes('/users', userRouter.router);
@@ -26,7 +27,9 @@ app.routes('/users', userRouter.router);
 const accountServices = new AccountServices(
   AppDataSource,
   Account,
-  accountSchema
+  accountSchema,
+  transferSchema,
+  User
 );
 const accountControllers = new AccountControllers(accountServices);
 const accountRouter = new AccountRouter(Router(), accountControllers, authMiddleware);

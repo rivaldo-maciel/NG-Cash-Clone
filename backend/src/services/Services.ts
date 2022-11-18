@@ -12,23 +12,31 @@ import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity
 import EntityNotFoundError from '../errors/EntityNotFoundError';
 import UnauthorizedError from '../errors/UnauthorizedError';
 
-abstract class Services<T, U = void> implements IServices<T> {
+abstract class Services<T, U = void, V = void> implements IServices<T> {
   private dataSource: DataSource;
   protected repository: Repository<T>;
   protected schema: z.ZodObject<ZodRawShape>;
+  protected schemaSupport: z.ZodObject<ZodRawShape>;
   protected repositorySupport: Repository<U>;
+  protected secondRepositorySupport: Repository<V>;
 
   constructor(
     dataSource: DataSource,
     model: EntityTarget<T>,
     schema: z.ZodObject<ZodRawShape>,
-    modelSupport?: EntityTarget<U>
+    schemaSupport?: z.ZodObject<ZodRawShape>,
+    modelSupport?: EntityTarget<U>,
+    secondModelSupport?: EntityTarget<V>
   ) {
     this.dataSource = dataSource;
     this.repository = this.dataSource.getRepository(model);
     this.schema = schema;
+    this.schemaSupport = schemaSupport;
     if (modelSupport) {
       this.repositorySupport = this.dataSource.getRepository(modelSupport);
+    }
+    if (secondModelSupport) {
+      this.secondRepositorySupport = this.dataSource.getRepository(secondModelSupport);
     }
   }
 
