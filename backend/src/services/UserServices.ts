@@ -4,6 +4,7 @@ import User from '../database/models/User';
 import UserNameDuplicateError from '../errors/UserNameDuplicateError';
 import IUserServices from './interfaces/IUserServices';
 import Services from './Services';
+import * as bcrypt from 'bcrypt';
 
 class UserServices extends Services<User, Account> implements IUserServices {
   protected repositorySupport: Repository<Account>;
@@ -11,10 +12,11 @@ class UserServices extends Services<User, Account> implements IUserServices {
   public async create(entity: User): Promise<User> {
     this.schema.parse(entity);
     await this.checkUserNameExistence(entity.userName);
-    const createdUser = await this.repository.save({ ...entity, accountId: 0 });
+    const hashedPassword = await this.hashPassword(entity.password);
+    const createdUser = await this.repository.save({ ...entity, accountId: 0, password: hashedPassword });
     const { id: accountId } = await this.repositorySupport.save({ balance: 100 });
     await this.repository.update(createdUser.id, { accountId });
-    return { ...createdUser, accountId };
+    return { id: createdUser.id, userName: createdUser.userName, accountId } as User;
   }
 
   public async getAll(): Promise<User[]> {
@@ -50,6 +52,12 @@ class UserServices extends Services<User, Account> implements IUserServices {
   public async checkUserNameExistence(userName: string): Promise<void> {
     const user = await this.repository.findOne({ where: { userName } });
     if (user) throw new UserNameDuplicateError();
+  }
+
+  public async hashPassword(password: string): Promise<string> {
+    const salt = await bcrypt.genSalt(10);
+    const hash = bcrypt.hashSync(password, salt);
+    return hash;
   }
 }
 
