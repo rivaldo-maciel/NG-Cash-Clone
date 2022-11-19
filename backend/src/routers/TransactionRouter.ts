@@ -9,6 +9,7 @@ class TransactionRouter extends GenericRouter<Transaction> {
     this.createPutRoute(this.authMiddleware);
     this.createDeleteRoute(this.authMiddleware);
   }
+
 }
 
 export default TransactionRouter;

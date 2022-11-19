@@ -1,8 +1,13 @@
-import { UpdateResult, DeleteResult, Repository } from 'typeorm';
+import {
+  UpdateResult,
+  DeleteResult,
+  Repository,
+} from 'typeorm';
 import { Transaction, User } from '../database/models';
 import Account from '../database/models/Account';
 import DepositTypeError from '../errors/DepositTypeError';
 import InsufficientResourcesError from '../errors/InsufficientResourcesError';
+import UserNotFoundError from '../errors/UserNotFoundError';
 import YourselfTransactionError from '../errors/YourselfTransactionError';
 import IAccountServices from './interfaces/IAccountServices';
 import Services from './Services';
@@ -69,27 +74,25 @@ class AccountServices
     creditedUserName: string
   ): Promise<UpdateResult> {
     this.schemaSupport.parse({ value, creditedUserName });
-    const positiveValue = value + -1;
-    const user = await this.secondRepositorySupport.findOne({
+    const positiveValue = value < 0 ? value * (-1) : value;
+    const creditedUser = await this.secondRepositorySupport.findOne({
       where: { userName: creditedUserName }
     });
     const creditedAccount = await this.repository.findOne({
-      where: { id: user.accountId }
+      where: { id: creditedUser.accountId }
     });
-    if (user.accountId === creditedAccount.id) {
-      throw new YourselfTransactionError();
-    }
-    if (typeof value !== 'number') {
-      throw new DepositTypeError();
-    }
     const debitedAccount = await this.repository.findOne({
       where: { id: accountId }
     });
-    if (debitedAccount.balance - positiveValue < 0) {
-      throw new InsufficientResourcesError();
-    }
-    const finalBalanceDebited = debitedAccount.balance - positiveValue;
-    const finalBalanceCredited = creditedAccount.balance + positiveValue;
+    await this.transactionValidate(
+      creditedUser,
+      accountId,
+      creditedAccount.id,
+      value,
+      Number(debitedAccount.balance)
+    );
+    const finalBalanceDebited = Number(debitedAccount.balance) - positiveValue;
+    const finalBalanceCredited = Number(creditedAccount.balance) + positiveValue;
     await this.repository.update(accountId, {
       ...debitedAccount,
       balance: finalBalanceDebited
@@ -100,6 +103,28 @@ class AccountServices
     );
     await this.saveTransaction(positiveValue, accountId, creditedAccount.id);
     return transferUpdateResult;
+  }
+
+  public async transactionValidate(
+    creditedUser: User,
+    accountId: Number,
+    creditedAccountId: Number,
+    value: number,
+    debitedAccountBalance: number
+  ): Promise<void> {
+    const positiveValue = value < 0 ? value * (-1) : value;
+    if (!creditedUser) {
+      throw new UserNotFoundError();
+    }
+    if (accountId === creditedAccountId) {
+      throw new YourselfTransactionError();
+    }
+    if (typeof value !== 'number') {
+      throw new DepositTypeError();
+    }
+    if (debitedAccountBalance - positiveValue < 0) {
+      throw new InsufficientResourcesError();
+    }
   }
 
   public async saveTransaction(

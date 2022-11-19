@@ -5,7 +5,6 @@ import IServices from './IServices';
 
 interface IAccountServices extends IServices<Account> {
   transfer(value: number, accountId: number, creditedUserName: string): Promise<UpdateResult>;
-  deposit(value: number, accountId: number): Promise<UpdateResult>;
   saveTransaction(value: number, accountId: number, creditedAccountId: number): Promise<Transaction>;
 }
 

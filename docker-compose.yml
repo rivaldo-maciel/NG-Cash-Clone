@@ -30,3 +30,5 @@ services:
       start_period: 15s
     ports:
       - "3001:3001"
+    volumes:
+      - './backend/src:/app/src'

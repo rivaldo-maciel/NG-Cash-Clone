@@ -1,37 +1,29 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
-import Account from '../database/models/Account';
+import { RequestHandler, Request, Response, NextFunction } from 'express';
+import IAccountControllers from '../controllers/interfaces/IAccountControllers';
+import { Account } from '../database/models';
+import { RequestWithUserId } from '../types/express';
 import GenericRouter from './GenericRouter';
 
 class AccountRouter extends GenericRouter<Account> {
+  protected controller: IAccountControllers;
+
   public createRoutes(): void {
     this.createPostRoute(this.authMiddleware);
     this.createGetAllRoute(this.authMiddleware);
+    this.createTransferRoute(this.authMiddleware);
     this.createGetByIdRoute(this.authMiddleware);
     this.createPutRoute(this.authMiddleware);
     this.createDeleteRoute(this.authMiddleware);
-    this.createTransferRoute(this.authMiddleware);
   }
 
-  public createDepositRoute(authMiddleware: RequestHandler): void {
+  public createTransferRoute(authMiddleware: RequestHandler | void): void {
     this._router.put(
-      '/deposit',
+      '/:id',
       (req: Request, res: Response, next: NextFunction) => {
-        authMiddleware(req, res, next);
+        authMiddleware ? authMiddleware(req, res, next) : next();
       },
-      (req: Request, res: Response, next: NextFunction) => {
-        this.controller.update(req, res, next);
-      }
-    );
-  }
-
-  public createTransferRoute(authMiddleware: RequestHandler): void {
-    this._router.put(
-      '/transfer',
-      (req: Request, res: Response, next: NextFunction) => {
-        authMiddleware(req, res, next);
-      },
-      (req: Request, res: Response, next: NextFunction) => {
-        this.controller.update(req, res, next);
+      (req: RequestWithUserId, res: Response, next: NextFunction) => {
+        this.controller.transfer(req, res, next);
       }
     );
   }

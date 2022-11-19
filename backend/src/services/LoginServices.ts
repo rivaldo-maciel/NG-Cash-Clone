@@ -6,6 +6,7 @@ import ILoginServices from './interfaces/ILoginServices';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import WrongLoginFieldsError from '../errors/WrongLoginFieldsError';
+import 'dotenv/config';
 
 class LoginServices implements ILoginServices {
   private dataSource: DataSource;
@@ -34,7 +35,7 @@ class LoginServices implements ILoginServices {
     }
     const payload = Object.assign({}, user);
     delete payload.password;
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { algorithm: 'ES256', expiresIn: '24h' });
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { algorithm: 'HS256', expiresIn: '24h' });
     return token;
   }
 }

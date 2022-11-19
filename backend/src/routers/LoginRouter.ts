@@ -2,11 +2,11 @@ import { NextFunction, Request, Response, Router } from 'express';
 import ILoginControllers from '../controllers/interfaces/ILoginControllers';
 
 class LoginRouter {
-  protected router: Router;
+  protected _router: Router;
   protected controller: ILoginControllers;
 
   constructor(expressRouter: Router, controller: ILoginControllers) {
-    this.router = expressRouter;
+    this._router = expressRouter;
     this.controller = controller;
     this.createLoginRouter();
   }
@@ -15,6 +15,10 @@ class LoginRouter {
     this.router.post('/', (req: Request, res: Response, next: NextFunction) => {
       this.controller.login(req, res, next);
     },)
+  }
+
+  get router() {
+    return this._router;
   }
 }
 

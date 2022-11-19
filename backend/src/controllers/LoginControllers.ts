@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import ILoginServices from '../services/interfaces/ILoginServices';
 import ILoginControllers from './interfaces/ILoginControllers';
 
-class LoginController implements ILoginControllers {
+class LoginControllers implements ILoginControllers {
   private services: ILoginServices;
 
   constructor(services: ILoginServices) {
@@ -17,10 +17,10 @@ class LoginController implements ILoginControllers {
       const { userName, password } = req.body;
       const token = await this.services.login(userName, password);
       return res.status(200).json({ userName, password, token });
-    } catch (err) {
+    } catch (err: unknown) {
       next(err);
     }
   }
 }
 
-export default LoginController;
+export default LoginControllers;
