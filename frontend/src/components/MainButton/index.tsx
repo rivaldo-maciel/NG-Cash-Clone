@@ -2,19 +2,28 @@ import { useState } from 'react';
 import { Container } from './style';
 
 type props = {
-  children: React.ReactNode
+  children: React.ReactNode,
+  height: number,
+  width: number,
+  backgroundColor: string,
+  onClick?: React.MouseEventHandler<HTMLDivElement> | undefined;
 }
 
-const MainButton = ({ children } : props) => {
+const MainButton = ({ children, height, width, backgroundColor, onClick } : props) => {
   const [isActive, setIsActive] = useState(false);
 
   return (
     <Container
       className={`main-button ${isActive ? 'button-active' : ''}`}
-      onClick={() => setIsActive((prevState) => !prevState)}
-      height={3.5}
-      width={18}
-      backgroundColor={"#8433cc"}
+      onClick={(e) => {
+        setIsActive((prevState) => !prevState);
+        if (onClick) {
+          onClick(e);
+        }
+      }}
+      height={height}
+      width={width}
+      backgroundColor={backgroundColor}
     >
       <div></div>
       <button type="button">

@@ -10,7 +10,7 @@ const LoginForm = () => {
 
   return (
     <Container>
-      <div className="input-section">
+      <div className="login-input-section">
         <label>
           Nome de usuário
           <input
@@ -39,7 +39,11 @@ const LoginForm = () => {
           )}
         </label>
       </div>
-      <MainButton>entrar</MainButton>
+      <MainButton
+        height={3.5}
+        width={18}
+        backgroundColor={"#8433cc"}
+        >entrar</MainButton>
       <span>Ainda não possui uma conta?</span>
       <a
         className="create-account-link"

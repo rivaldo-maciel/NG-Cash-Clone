@@ -5,7 +5,7 @@ import { Container } from './style';
 const Login = () => {
   return (
     <Container>
-      <LogoSection />
+      <LogoSection page="Login"/>
       <LoginForm />
     </Container>
   );
