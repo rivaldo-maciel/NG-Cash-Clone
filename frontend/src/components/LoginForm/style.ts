@@ -38,4 +38,19 @@ export const Container = styled.form`
     margin-top: 3rem;
     align-self: center;
   }
+
+  & span {
+    margin-top: 5rem;
+    align-self: center;
+    font-size: 1rem;
+  }
+
+  & .create-account-link {
+    align-self: center;
+    text-decoration: underline;
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #070707;
+  }
 `
