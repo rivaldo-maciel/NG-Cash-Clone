@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import * as express from 'express';
-import { Router, ErrorRequestHandler, RequestHandler } from 'express';
+import { Router, ErrorRequestHandler } from 'express';
 
 class App {
   private express: express.Application;

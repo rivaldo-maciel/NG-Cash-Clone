@@ -52,22 +52,6 @@ class AccountServices
     return await this.repository.delete(id);
   }
 
-  public async deposit(
-    value: number,
-    accountId: number
-  ): Promise<UpdateResult> {
-    if (typeof value !== 'number') {
-      throw new DepositTypeError();
-    }
-    const positiveValue = value * -1;
-    const account = await this.repository.findOne({ where: { id: accountId } });
-    const finalBalance = account.balance + positiveValue;
-    return await this.repository.update(account.id, {
-      ...account,
-      balance: finalBalance
-    });
-  }
-
   public async transfer(
     value: number,
     accountId: number,

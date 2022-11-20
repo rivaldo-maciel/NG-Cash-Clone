@@ -1,11 +1,17 @@
 import { UpdateResult, DeleteResult } from 'typeorm';
 import Transaction from '../database/models/Transaction';
+import TransactionType from '../enums/TransactionType';
 import ITransaction from './interfaces/ITransactionServices';
 import Services from './Services';
 
-class TransactionServices extends Services<Transaction> implements ITransaction {
-
-  public async create(entity: Transaction, userId: number): Promise<Transaction> {
+class TransactionServices
+  extends Services<Transaction>
+  implements ITransaction
+{
+  public async create(
+    entity: Transaction,
+    userId: number
+  ): Promise<Transaction> {
     this.schema.parse(entity);
     this.checkUserAuth(entity.debitedAccountId, userId);
     return await this.repository.save(entity);
@@ -27,7 +33,7 @@ class TransactionServices extends Services<Transaction> implements ITransaction 
       debitedAccountId?: number;
       creditedAccountId?: number;
       value?: number;
-      createdAt?: string
+      createdAt?: string;
     },
     userId: number
   ): Promise<UpdateResult> {
@@ -40,6 +46,21 @@ class TransactionServices extends Services<Transaction> implements ITransaction 
     await this.checkExistence(id);
     this.checkUserAuth(id, userId);
     return this.repository.delete(id);
+  }
+
+  public async getTransactionsByAccountId(
+    accountId: number,
+    type: TransactionType
+  ): Promise<Transaction[]> {
+    if (type === 'cashIn') {
+      return await this.repository.find({
+        where: { creditedAccountId: accountId }
+      });
+    } else {
+      return await this.repository.find({
+        where: { debitedAccountId: accountId }
+      });
+    }
   }
 }
 

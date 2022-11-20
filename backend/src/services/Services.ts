@@ -59,7 +59,7 @@ abstract class Services<T, U = void, V = void> implements IServices<T> {
     if (!entity) throw new EntityNotFoundError();
   }
 
-  public async checkUserAuth(id: number, userId: number): Promise<void> {
+  public checkUserAuth(id: number, userId: number): void {
     if (id !== userId) {
       throw new UnauthorizedError();
     }
