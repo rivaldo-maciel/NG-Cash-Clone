@@ -48,7 +48,7 @@ export class createTransactionsTable1668532382459
       new TableForeignKey({
         columnNames: ['debited_account_id'],
         referencedTableName: 'accounts',
-        referencedColumnNames: ['id']
+        referencedColumnNames: ['id'],
       })
     );
 
@@ -58,8 +58,6 @@ export class createTransactionsTable1668532382459
         columnNames: ['credited_account_id'],
         referencedTableName: 'accounts',
         referencedColumnNames: ['id'],
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
       })
     );
   }

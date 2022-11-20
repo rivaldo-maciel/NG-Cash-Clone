@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
 
-export class createUsersTable1668532200101 implements MigrationInterface {
+export class createUsersTable1668532352923 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -26,7 +26,6 @@ export class createUsersTable1668532200101 implements MigrationInterface {
           {
             name: 'account_id',
             type: 'int',
-            isNullable: false,
           }
         ]
       })
