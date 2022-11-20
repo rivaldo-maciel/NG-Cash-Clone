@@ -1,7 +1,6 @@
 import { Response, NextFunction } from 'express';
 import Transaction from '../database/models/Transaction';
 import TransactionType from '../enums/TransactionType';
-import IServices from '../services/interfaces/IServices';
 import ITransactionServices from '../services/interfaces/ITransactionServices';
 import { RequestWithUserId } from '../types/express';
 import Controllers from './Controllers';
