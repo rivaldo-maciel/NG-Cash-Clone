@@ -4,6 +4,7 @@ export const Container = styled.section`
   margin-top: 2rem;
   background-color: #FFFFFF;
   width: 90%;
+  max-width: 50rem;
   border-radius: 10px;
 
   & header {

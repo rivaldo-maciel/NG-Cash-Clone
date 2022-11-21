@@ -12,10 +12,6 @@ export const Container = styled.div<{ skin: string }>`
   align-items: center;
   position: relative;
 
-  & .main-content {
-    
-  }
-
   & .main-button:nth-child(1) {
     position: absolute;
     top: 0.5rem;

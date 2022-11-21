@@ -4,6 +4,9 @@ export const Container = styled.form`
   display: flex;
   flex-direction: column;
   padding: 1.5rem;
+  width: 100%;
+  max-width: 30rem;
+  align-self: center;
 
   & label {
     display: flex;

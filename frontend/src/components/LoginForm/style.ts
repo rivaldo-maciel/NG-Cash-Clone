@@ -4,6 +4,9 @@ export const Container = styled.form`
   display: flex;
   flex-direction: column;
   padding: 1.5rem;
+  align-self: center;
+  width: 100%;
+  max-width: 30rem;
 
   & label {
     display: flex;
@@ -32,6 +35,7 @@ export const Container = styled.form`
     position: absolute;
     right: 0;
     bottom: 1rem;
+    cursor: pointer;
   }
 
   & .main-button {
