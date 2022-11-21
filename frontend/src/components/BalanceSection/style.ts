@@ -38,6 +38,7 @@ export const Container = styled.section`
     justify-content: center;
     border-radius: 10px;
     align-self: flex-end;
+    cursor: pointer;
   }
 
   & .balance-visible {

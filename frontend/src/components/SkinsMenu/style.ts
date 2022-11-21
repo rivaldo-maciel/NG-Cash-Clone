@@ -14,6 +14,7 @@ export const Container = styled.section`
     align-self: flex-end;
     margin-right: 0.5rem;
     margin-top: 0.5rem;
+    cursor: pointer;
   }
 
   & .skins-card-container {

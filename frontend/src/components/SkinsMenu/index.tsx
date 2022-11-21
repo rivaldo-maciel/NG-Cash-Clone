@@ -12,10 +12,11 @@ const SkinsMenu = () => {
       <SlClose size={30} onClick={() => setShowSkinMenu(false)}/>
       <div className="skins-card-container">
         {
-          skins.map(({ src, name }) => (
+          skins.map(({ id, src, name }) => (
             <SkinCard
               src={src}
               name={name}
+              key={id}
             />
           ))
         }

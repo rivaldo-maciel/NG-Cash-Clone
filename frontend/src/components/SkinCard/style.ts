@@ -5,6 +5,7 @@ export const Container = styled.div<{ src: string }>`
   width: 8.5rem;
   border-radius: 5px;
   background-size: cover;
+  background-repeat: no-repeat;
   background-image: url(${ props => props.src });
   display: flex;
   cursor: pointer;

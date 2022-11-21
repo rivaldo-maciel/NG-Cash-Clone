@@ -11,6 +11,7 @@ export const Container = styled.div<{
   position: relative;
 
   & button {
+    border: 1px solid black;
     background-color: #ffff;
     order: 1px solid black;
     height: ${(props) => props.height}rem;
@@ -21,6 +22,7 @@ export const Container = styled.div<{
     width: ${(props) => props.width}rem;
     top: 0;
     transition: all 1s ease;
+    cursor: pointer;
   }
 
   & div {

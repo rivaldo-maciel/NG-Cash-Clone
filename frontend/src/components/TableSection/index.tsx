@@ -1,6 +1,7 @@
 import { Container } from './style';
 import { AiOutlineArrowUp } from 'react-icons/ai';
 import { useState } from 'react';
+import TransactionsTable from '../../TransactionsTable';
 
 const TableSection = () => {
   const [date, setDate] = useState('');
@@ -31,6 +32,7 @@ const TableSection = () => {
           </select>
         </label>
       </div>
+      <TransactionsTable />
     </Container>
   );
 };
