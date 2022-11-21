@@ -1,12 +1,16 @@
 import { useState } from 'react';
+import { createUser } from '../../services';
 import MainButton from '../MainButton';
 import { Container, IncorrectFieldMessage } from './style';
+import { AxiosError } from 'axios';
 
 const RegisterForm = () => {
   const [userName, setUserName] = useState('');
   const [isInvalidUserName, setIsInvalidUserName] = useState(false);
   const [isInvalidPassword, setIsInvalidPassword] = useState(false);
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const validateUserName = (userName: string): void => {
     if (userName.length < 3) {
@@ -17,7 +21,7 @@ const RegisterForm = () => {
   };
 
   const validatePassword = (password: string): void => {
-    const regex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$');
+    const regex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,}).*$');
     if (!regex.test(password)) {
       return setIsInvalidPassword(true);
     } else {
@@ -25,16 +29,30 @@ const RegisterForm = () => {
     }
   };
 
-  const register = (userName: string, password: string): void => {
-    validateUserName(userName);
-    validatePassword(password);
+  const register = async (
+    userName: string,
+    password: string
+  ): Promise<void> => {
+    try {
+      validateUserName(userName);
+      validatePassword(password);
+      if (isInvalidUserName === false && isInvalidPassword == false) {
+        await createUser(userName, password);
+        setError(false);
+      }
+    } catch (err: unknown) {
+      if (err instanceof AxiosError) {
+        setError(true);
+        setErrorMessage(err.response?.data.message);
+      }
+    }
   };
 
   return (
     <Container>
       <div className="register-input-section">
         <label>
-          Nome de usuário
+          Nome de usuário:
           <input
             type="text"
             value={userName}
@@ -50,7 +68,7 @@ const RegisterForm = () => {
           )}
         </label>
         <label>
-          Senha
+          Senha:
           <input
             type="text"
             value={password}
@@ -61,7 +79,8 @@ const RegisterForm = () => {
           />
           {isInvalidPassword && (
             <IncorrectFieldMessage>
-              senha precisa ter no mínimo 8 caracteres, incluindo uma letra maíuscula e um número.
+              senha precisa ter no mínimo 8 caracteres, incluindo uma letra
+              maíuscula e um número.
             </IncorrectFieldMessage>
           )}
         </label>
@@ -75,6 +94,9 @@ const RegisterForm = () => {
       >
         cadastrar
       </MainButton>
+      <h3 className={error ? 'error-message' : 'success-message'}>
+        {error ? errorMessage : 'conta criada com sucesso!'}
+      </h3>
       <span>Já possui uma conta?</span>
       <a className="enter-account-link" href="/login">
         Entrar

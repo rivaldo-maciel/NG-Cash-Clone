@@ -12,7 +12,7 @@ const LoginForm = () => {
     <Container>
       <div className="login-input-section">
         <label>
-          Nome de usuário
+          Nome de usuário:
           <input
             type="text"
             value={userName}
@@ -20,7 +20,7 @@ const LoginForm = () => {
           />
         </label>
         <label>
-          Senha
+          Senha:
           <input
             type={showPassword ? 'text' : 'password'}
             value={password}
