@@ -43,6 +43,7 @@ const LoginForm = () => {
         height={3.5}
         width={18}
         backgroundColor={"#8433cc"}
+        backgroundBorderColor="#070707"
         >entrar</MainButton>
       <span>Ainda não possui uma conta?</span>
       <a

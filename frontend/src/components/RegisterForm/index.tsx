@@ -70,6 +70,7 @@ const RegisterForm = () => {
         height={3.5}
         width={18}
         backgroundColor={'#8433cc'}
+        backgroundBorderColor="#070707"
         onClick={() => register(userName, password)}
       >
         cadastrar

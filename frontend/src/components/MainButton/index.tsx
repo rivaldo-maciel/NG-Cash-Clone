@@ -2,14 +2,22 @@ import { useState } from 'react';
 import { Container } from './style';
 
 type props = {
-  children: React.ReactNode,
-  height: number,
-  width: number,
-  backgroundColor: string,
+  children: React.ReactNode;
+  height: number;
+  width: number;
+  backgroundColor: string;
+  backgroundBorderColor: string;
   onClick?: React.MouseEventHandler<HTMLDivElement> | undefined;
-}
+};
 
-const MainButton = ({ children, height, width, backgroundColor, onClick } : props) => {
+const MainButton = ({
+  children,
+  height,
+  width,
+  backgroundColor,
+  backgroundBorderColor,
+  onClick
+}: props) => {
   const [isActive, setIsActive] = useState(false);
 
   return (
@@ -24,15 +32,12 @@ const MainButton = ({ children, height, width, backgroundColor, onClick } : prop
       height={height}
       width={width}
       backgroundColor={backgroundColor}
+      backgroundBorderColor={backgroundBorderColor}
     >
       <div></div>
-      <button type="button">
-        {
-          children
-        }
-      </button>
+      <button type="button">{children}</button>
     </Container>
-  )
-}
+  );
+};
 
 export default MainButton;
