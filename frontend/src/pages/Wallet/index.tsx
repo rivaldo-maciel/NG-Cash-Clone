@@ -5,6 +5,7 @@ import { MdDashboardCustomize } from 'react-icons/md';
 import { Container } from './style';
 import SkinsMenu from '../../components/SkinsMenu';
 import { skinContext } from '../../context/skinContext';
+import TableSection from '../../components/TableSection';
 
 const Wallet = () => {
   const {skin, showSkinMenu, setShowSkinMenu} = useContext(skinContext);
@@ -26,6 +27,7 @@ const Wallet = () => {
           )
         }
       <BalanceSection />
+      <TableSection />
     </Container>
   );
 };
