@@ -35,7 +35,7 @@ export const Container = styled.div<{
     left: 0.5rem;
     top: 0.5rem;
     background-color: ${(props) => props.backgroundColor};
-    border: 1px solid ${(props) => props.backgroundBorderColor};;
+    border: 1px solid ${(props) => props.backgroundBorderColor};
   }
 
   &.button-active {

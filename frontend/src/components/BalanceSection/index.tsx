@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
+import { transferMenuContext } from '../../context/transferMenuContext';
 import MainButton from '../MainButton';
 import { Container } from './style';
 
 const BalanceSection = () => {
   const [showBalance, setShowBalance] = useState(true);
+  const { setShowModal } = useContext(transferMenuContext);
   return (
     <Container className="balance-container">
       <div className="eye-button-container">
@@ -35,6 +37,7 @@ const BalanceSection = () => {
         width={8}
         backgroundColor="#070707"
         backgroundBorderColor="#FFFF"
+        onClick={() => setShowModal(true) }
       >
         transferir
       </MainButton>

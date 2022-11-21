@@ -6,9 +6,10 @@ import { Container } from './style';
 import SkinsMenu from '../../components/SkinsMenu';
 import { skinContext } from '../../context/skinContext';
 import TableSection from '../../components/TableSection';
+import TransferModal from '../../components/TransferModal';
 
 const Wallet = () => {
-  const {skin, showSkinMenu, setShowSkinMenu} = useContext(skinContext);
+  const { skin, showSkinMenu, setShowSkinMenu } = useContext(skinContext);
   return (
     <Container skin={skin}>
       <MainButton
@@ -16,18 +17,17 @@ const Wallet = () => {
         height={4}
         backgroundColor="#8433cc"
         backgroundBorderColor="#070707"
-        onClick={() => { setShowSkinMenu(true)}}
-        >
-          <MdDashboardCustomize size={30}/>
-          skins
-        </MainButton>
-        {
-          showSkinMenu && (
-            <SkinsMenu/>
-          )
-        }
+        onClick={() => {
+          setShowSkinMenu(true);
+        }}
+      >
+        <MdDashboardCustomize size={30} />
+        skins
+      </MainButton>
       <BalanceSection />
       <TableSection />
+      {showSkinMenu && <SkinsMenu />}
+      <TransferModal />
     </Container>
   );
 };

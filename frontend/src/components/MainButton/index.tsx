@@ -24,7 +24,10 @@ const MainButton = ({
     <Container
       className={`main-button ${isActive ? 'button-active' : ''}`}
       onClick={(e) => {
-        setIsActive((prevState) => !prevState);
+        setIsActive(true);
+        setTimeout(() => {
+        setIsActive(false);
+        }, 800)
         if (onClick) {
           onClick(e);
         }

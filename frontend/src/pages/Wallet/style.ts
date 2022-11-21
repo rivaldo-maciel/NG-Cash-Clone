@@ -6,8 +6,15 @@ export const Container = styled.div<{ skin: string }>`
   height: 100vh;
   display: flex;
   flex-direction: column;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
+
+  & .main-content {
+    
+  }
 
   & .main-button:nth-child(1) {
     position: absolute;

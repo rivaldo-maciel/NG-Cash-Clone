@@ -44,7 +44,8 @@ const LoginForm = () => {
         width={18}
         backgroundColor={"#8433cc"}
         backgroundBorderColor="#070707"
-        >entrar</MainButton>
+        >entrar
+      </MainButton>
       <span>Ainda não possui uma conta?</span>
       <a
         className="create-account-link"
