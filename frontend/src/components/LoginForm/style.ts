@@ -34,7 +34,7 @@ export const Container = styled.form`
   & label svg {
     position: absolute;
     right: 0;
-    bottom: 1rem;
+    bottom: 0.5rem;
     cursor: pointer;
   }
 

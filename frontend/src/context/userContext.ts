@@ -1,21 +1,20 @@
 import { createContext } from 'react';
-
-export type user = {
-  userName: string;
-  accountId: string;
-  token: string;
-};
+import { Transaction, User } from '../types';
 
 type UserContext = {
-  user: user,
-  setUser: React.Dispatch<React.SetStateAction<user>>,
+  user: User,
+  setUser: React.Dispatch<React.SetStateAction<User>>,
   balance: number,
   setBalance: React.Dispatch<React.SetStateAction<number>>,
+  transactions: Transaction[],
+  setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>
 };
 
 export const userContext = createContext<UserContext>({
   user: { userName: '', accountId: '', token: '' },
   setUser: () => {},
   balance: 0,
-  setBalance: () => {}
+  setBalance: () => {},
+  transactions: [],
+  setTransactions: () => {}
 });

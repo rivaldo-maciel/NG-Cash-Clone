@@ -43,4 +43,11 @@ export const Container = styled.section`
     cursor: pointer;
     margin-top: 0.3rem;
   }
+
+  & .get-transactions-error-message {
+    align-self: center;
+    margin-top: 1rem;
+    color: #ea2762;
+    font-size: 0.9rem;
+  }
 `

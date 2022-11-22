@@ -35,6 +35,7 @@ const LoginForm = () => {
       const user = await login(userName, password);
       setUser(user);
       setError(false);
+      localStorage.setItem('token', user.token);
       navigate('/wallet');
     } catch (err: unknown) {
       if (err instanceof AxiosError) {

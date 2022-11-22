@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { transferMenuContext } from './transferMenuContext';
-
 type props = {
   children: React.ReactNode
 }

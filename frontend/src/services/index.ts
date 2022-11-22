@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { user } from '../context/userContext';
+import { Transaction, User } from '../types';
 
 export const createUser = async (
   userName: string,
@@ -11,7 +11,7 @@ export const createUser = async (
 export const login = async (
   userName: string,
   password: string
-): Promise<user> => {
+): Promise<User> => {
   return await (
     await axios.post('http://localhost:3001/login', { userName, password })
   ).data;
@@ -42,3 +42,18 @@ export const makeTrasfer = async (
     { headers: { Authorization: token } }
   );
 };
+
+export const getTransactions = async (
+  type: string,
+  token: string
+): Promise<Transaction[]> => {
+  return await (
+    await axios.get(`http://localhost:3001/transactions/?type=${type}`, {
+      headers: { Authorization: token }
+    })
+  ).data;
+};
+
+export const auth = async (token: string): Promise<User> => {
+  return await (await axios.post('http://localhost:3001/login/auth', { token })).data;
+}

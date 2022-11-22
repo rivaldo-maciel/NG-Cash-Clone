@@ -12,9 +12,15 @@ const BalanceSection = () => {
   const { user, balance, setBalance } = useContext(userContext);
 
   useEffect(() => {
-    getBalance(Number(user.accountId), user.token)
-    .then((data) => setBalance(data));
-  }, []);
+    if (user.token !== '') {
+      getBalance(Number(user.accountId), user.token)
+      .then((data) => {
+        setBalance(data);
+      })
+      .catch((err) => console.log(err));
+    }
+  }, [user]);
+
   return (
     <Container className="balance-container">
       <div className="eye-button-container">
@@ -34,7 +40,9 @@ const BalanceSection = () => {
         <div className="value-container">
           <span className="dollar-sign">R$</span>
           {showBalance ? (
-            <span className="balance-visible">{`${balance}`.replace('.', ',')}</span>
+            <span className="balance-visible">
+              {`${balance}`.replace('.', ',')}
+            </span>
           ) : (
             <span className="balance-hidden"></span>
           )}
@@ -45,7 +53,7 @@ const BalanceSection = () => {
         width={8}
         backgroundColor="#070707"
         backgroundBorderColor="#FFFF"
-        onClick={() => setShowModal(true) }
+        onClick={() => setShowModal(true)}
       >
         transferir
       </MainButton>
