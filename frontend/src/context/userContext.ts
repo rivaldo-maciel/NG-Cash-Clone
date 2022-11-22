@@ -7,11 +7,15 @@ export type user = {
 };
 
 type UserContext = {
-  user: user;
-  setUser: React.Dispatch<React.SetStateAction<user>>;
+  user: user,
+  setUser: React.Dispatch<React.SetStateAction<user>>,
+  balance: number,
+  setBalance: React.Dispatch<React.SetStateAction<number>>,
 };
 
 export const userContext = createContext<UserContext>({
   user: { userName: '', accountId: '', token: '' },
-  setUser: () => {}
+  setUser: () => {},
+  balance: 0,
+  setBalance: () => {}
 });

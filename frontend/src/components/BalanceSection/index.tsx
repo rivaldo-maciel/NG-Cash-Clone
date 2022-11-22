@@ -1,12 +1,20 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
 import { transferMenuContext } from '../../context/transferMenuContext';
+import { userContext } from '../../context/userContext';
+import { getBalance } from '../../services';
 import MainButton from '../MainButton';
 import { Container } from './style';
 
 const BalanceSection = () => {
   const [showBalance, setShowBalance] = useState(true);
   const { setShowModal } = useContext(transferMenuContext);
+  const { user, balance, setBalance } = useContext(userContext);
+
+  useEffect(() => {
+    getBalance(Number(user.accountId), user.token)
+    .then((data) => setBalance(data));
+  }, []);
   return (
     <Container className="balance-container">
       <div className="eye-button-container">
@@ -26,7 +34,7 @@ const BalanceSection = () => {
         <div className="value-container">
           <span className="dollar-sign">R$</span>
           {showBalance ? (
-            <span className="balance-visible">{'150,00'}</span>
+            <span className="balance-visible">{`${balance}`.replace('.', ',')}</span>
           ) : (
             <span className="balance-hidden"></span>
           )}
