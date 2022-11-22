@@ -62,6 +62,9 @@ class AccountServices
     const creditedUser = await this.secondRepositorySupport.findOne({
       where: { userName: creditedUserName }
     });
+    if (!creditedUser) {
+      throw new UserNotFoundError();
+    }
     const creditedAccount = await this.repository.findOne({
       where: { id: creditedUser.accountId }
     });
@@ -69,11 +72,10 @@ class AccountServices
       where: { id: accountId }
     });
     await this.transactionValidate(
-      creditedUser,
       accountId,
       creditedAccount.id,
       value,
-      Number(debitedAccount.balance)
+      Number(debitedAccount.balance),
     );
     const finalBalanceDebited = Number(debitedAccount.balance) - positiveValue;
     const finalBalanceCredited = Number(creditedAccount.balance) + positiveValue;
@@ -90,16 +92,12 @@ class AccountServices
   }
 
   public async transactionValidate(
-    creditedUser: User,
     accountId: Number,
     creditedAccountId: Number,
     value: number,
-    debitedAccountBalance: number
+    debitedAccountBalance: number,
   ): Promise<void> {
     const positiveValue = value < 0 ? value * (-1) : value;
-    if (!creditedUser) {
-      throw new UserNotFoundError();
-    }
     if (accountId === creditedAccountId) {
       throw new YourselfTransactionError();
     }

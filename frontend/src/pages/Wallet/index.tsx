@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import BalanceSection from '../../components/BalanceSection';
 import MainButton from '../../components/MainButton';
 import { MdDashboardCustomize } from 'react-icons/md';
+import { HiOutlineArrowDown } from 'react-icons/hi';
 import { Container } from './style';
 import SkinsMenu from '../../components/SkinsMenu';
 import { skinContext } from '../../context/skinContext';
@@ -30,6 +31,12 @@ const Wallet = () => {
     }
   }, []);
 
+  const logout = (): void => {
+    setUser({ userName: '', accountId: '', token: ''});
+    localStorage.removeItem('token');
+    navigate('/login');
+  }
+
   return (
     <Container skin={skin}>
       <MainButton
@@ -43,6 +50,18 @@ const Wallet = () => {
       >
         <MdDashboardCustomize size={30} />
         skins
+      </MainButton>
+      <MainButton
+        width={4}
+        height={4}
+        backgroundColor="#8433cc"
+        backgroundBorderColor="#070707"
+        onClick={() => {
+          logout();
+        }}
+      >
+        <HiOutlineArrowDown size={30} />
+        sair
       </MainButton>
       <BalanceSection />
       <TableSection />

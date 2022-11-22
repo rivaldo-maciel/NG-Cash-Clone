@@ -25,4 +25,19 @@ export const Container = styled.div<{ skin: string }>`
     align-items: center;
     font-size: 1rem;
   }
+
+  & .main-button:nth-child(2) {
+    position: absolute;
+    top: 6rem;
+    right: 1rem;
+  }
+
+  & .main-button:nth-child(2) button{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+  }
+
 `
