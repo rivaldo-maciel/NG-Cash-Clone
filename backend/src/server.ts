@@ -45,7 +45,8 @@ app.routes('/accounts', accountRouter.router);
 const transactionServices = new TransactionServices(
   AppDataSource,
   Transaction,
-  transactionSchema
+  transactionSchema,
+  userServices
 );
 const transactionControllers = new TransactionControllers(transactionServices);
 const transactionRouter = new TransactionRouter(

@@ -1,13 +1,35 @@
-import { UpdateResult, DeleteResult } from 'typeorm';
+import {
+  UpdateResult,
+  DeleteResult,
+  Repository,
+  DataSource,
+  EntityTarget
+} from 'typeorm';
+import { z, ZodRawShape } from 'zod';
+import { User } from '../database/models';
 import Transaction from '../database/models/Transaction';
 import TransactionType from '../enums/TransactionType';
+import { FormattedTransaction } from '../types/transaction';
 import ITransaction from './interfaces/ITransactionServices';
+import IUserServices from './interfaces/IUserServices';
 import Services from './Services';
 
 class TransactionServices
   extends Services<Transaction>
   implements ITransaction
 {
+  protected userServices: IUserServices;
+
+  constructor(
+    dataSource: DataSource,
+    model: EntityTarget<Transaction>,
+    schema: z.ZodObject<ZodRawShape>,
+    userServices: IUserServices
+  ) {
+    super(dataSource, model, schema);
+    this.userServices = userServices;
+  }
+
   public async create(
     entity: Transaction,
     userId: number
@@ -51,16 +73,45 @@ class TransactionServices
   public async getTransactionsByAccountId(
     accountId: number,
     type: TransactionType
-  ): Promise<Transaction[]> {
-    if (type === 'cashIn') {
-      return await this.repository.find({
-        where: { creditedAccountId: accountId }
-      });
-    } else {
-      return await this.repository.find({
-        where: { debitedAccountId: accountId }
-      });
+  ): Promise<FormattedTransaction[]> {
+    const creditedTransactions = await this.repository.find({
+      where: { creditedAccountId: accountId }
+    });
+    const debitedTransactions = await this.repository.find({
+      where: { debitedAccountId: accountId }
+    });
+    const result = {
+      all: [...await this.formatTransaction(creditedTransactions), ...await this.formatTransaction(debitedTransactions)],
+      cashIn: await this.formatTransaction(creditedTransactions),
+      cashOut: await this.formatTransaction(debitedTransactions),
     }
+    return result[type];
+  }
+
+  public async formatTransaction(
+    transactions: Transaction[]
+  ): Promise<FormattedTransaction[]> {
+    const formattedTransactions = transactions.map(async (transaction) => {
+      return {
+        creditedUserName: await this.userServices.getUserNameByAccountId(
+          transaction.creditedAccountId
+        ) as unknown as Promise<string>,
+        debitedUserName: await this.userServices.getUserNameByAccountId(
+          transaction.debitedAccountId
+        ) as unknown as Promise<string>,
+        value: Number(transaction.value),
+        createdAt: this.formatDate(transaction.createdAt)
+      };
+    });
+
+    const promise = await Promise.all(formattedTransactions) as unknown as FormattedTransaction[];
+    return promise;
+  }
+
+  public formatDate(date: Date): string {
+    const dateString = date.toISOString();
+    const splittedDate = dateString.split('T');
+    return splittedDate[0];
   }
 }
 

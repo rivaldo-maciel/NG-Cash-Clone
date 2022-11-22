@@ -18,7 +18,7 @@ class AccountRouter extends GenericRouter<Account> {
 
   public createTransferRoute(authMiddleware: RequestHandler | void): void {
     this._router.put(
-      '/:id',
+      '/transfer',
       (req: Request, res: Response, next: NextFunction) => {
         authMiddleware ? authMiddleware(req, res, next) : next();
       },

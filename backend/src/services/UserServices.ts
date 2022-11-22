@@ -59,6 +59,11 @@ class UserServices extends Services<User, Account> implements IUserServices {
     const hash = bcrypt.hashSync(password, salt);
     return hash;
   }
+
+  public async getUserNameByAccountId(accountId: number): Promise<string> {
+    const user = await this.repository.findOne({ where: { accountId }});
+    return user.userName;
+  }
 }
 
 export default UserServices;

@@ -16,7 +16,7 @@ class Transaction {
   @Column({ name: 'credited_account_id' })
   creditedAccountId: number;
 
-  @Column()
+  @Column({ type: 'decimal', precision: 15, scale: 2, default: 0 })
   value: number;
 
   @CreateDateColumn()
