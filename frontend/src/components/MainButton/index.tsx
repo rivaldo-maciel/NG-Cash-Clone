@@ -8,6 +8,7 @@ type props = {
   backgroundColor: string;
   backgroundBorderColor: string;
   onClick?: React.MouseEventHandler<HTMLDivElement> | undefined;
+  isDisabled?: boolean;
 };
 
 const MainButton = ({
@@ -16,7 +17,8 @@ const MainButton = ({
   width,
   backgroundColor,
   backgroundBorderColor,
-  onClick
+  onClick,
+  isDisabled
 }: props) => {
   const [isActive, setIsActive] = useState(false);
 
@@ -36,6 +38,7 @@ const MainButton = ({
       width={width}
       backgroundColor={backgroundColor}
       backgroundBorderColor={backgroundBorderColor}
+      isDisabled={isDisabled === undefined ? false : isDisabled }
     >
       <div></div>
       <button type="button">{children}</button>

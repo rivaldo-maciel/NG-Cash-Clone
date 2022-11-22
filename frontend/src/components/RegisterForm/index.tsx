@@ -10,6 +10,7 @@ const RegisterForm = () => {
   const [isInvalidPassword, setIsInvalidPassword] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const validateUserName = (userName: string): void => {
@@ -39,10 +40,12 @@ const RegisterForm = () => {
       if (isInvalidUserName === false && isInvalidPassword == false) {
         await createUser(userName, password);
         setError(false);
+        setSuccess(true);
       }
     } catch (err: unknown) {
       if (err instanceof AxiosError) {
         setError(true);
+        setSuccess(false);
         setErrorMessage(err.response?.data.message);
       }
     }
@@ -94,9 +97,10 @@ const RegisterForm = () => {
       >
         cadastrar
       </MainButton>
-      <h3 className={error ? 'error-message' : 'success-message'}>
-        {error ? errorMessage : 'conta criada com sucesso!'}
-      </h3>
+      {error && <h3 className="error-message">{errorMessage}</h3>}
+      {success && (
+        <h3 className="success-message">conta criada com sucesso!</h3>
+      )}
       <span>Já possui uma conta?</span>
       <a className="enter-account-link" href="/login">
         Entrar

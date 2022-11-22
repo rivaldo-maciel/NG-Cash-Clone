@@ -57,4 +57,11 @@ export const Container = styled.form`
     font-weight: bold;
     color: #070707;
   }
+
+  & .login-error-message {
+    align-self: center;
+    margin-top: 1rem;
+    color: #ea2762;
+    font-size: 0.9rem;
+  }
 `
