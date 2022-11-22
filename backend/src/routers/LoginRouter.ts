@@ -8,13 +8,20 @@ class LoginRouter {
   constructor(expressRouter: Router, controller: ILoginControllers) {
     this._router = expressRouter;
     this.controller = controller;
-    this.createLoginRouter();
+    this.createAuthWithTokenRoute();
+    this.createLoginRoute();
   }
 
-  private createLoginRouter(): void {
+  private createLoginRoute(): void {
     this.router.post('/', (req: Request, res: Response, next: NextFunction) => {
       this.controller.login(req, res, next);
-    },)
+    })
+  }
+
+  private createAuthWithTokenRoute(): void {
+    this.router.post('/auth', (req: Request, res: Response, next: NextFunction) => {
+      this.controller.authWithToken(req, res, next);
+    })
   }
 
   get router() {

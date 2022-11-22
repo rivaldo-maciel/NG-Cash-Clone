@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import * as express from 'express';
+import * as cors from 'cors';
 import { Router, ErrorRequestHandler } from 'express';
 
 class App {
@@ -12,6 +13,7 @@ class App {
 
   private config(): void {
     this.express.use(express.json());
+    this.express.use(cors());
   }
 
   public routes(route: string, router: Router): void {

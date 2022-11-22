@@ -54,6 +54,22 @@ export const getTransactions = async (
   ).data;
 };
 
+export const getTransactionsByDate = async (
+  date: string,
+  token: string
+): Promise<Transaction[]> => {
+  const transactions = await (
+    await axios.get('http://localhost:3001/transactions/?type=all', {
+      headers: { Authorization: token }
+    })
+  ).data;
+  return transactions.filter(
+    (transaction: Transaction) => transaction.createdAt === date
+  );
+};
+
 export const auth = async (token: string): Promise<User> => {
-  return await (await axios.post('http://localhost:3001/login/auth', { token })).data;
-}
+  return await (
+    await axios.post('http://localhost:3001/login/auth', { token })
+  ).data;
+};

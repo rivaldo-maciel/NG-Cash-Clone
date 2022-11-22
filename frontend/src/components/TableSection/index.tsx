@@ -3,7 +3,7 @@ import { AiOutlineArrowUp } from 'react-icons/ai';
 import { useContext, useEffect, useState } from 'react';
 import TransactionsTable from '../TransactionsTable';
 import { userContext } from '../../context/userContext';
-import { getTransactions } from '../../services';
+import { getTransactions, getTransactionsByDate } from '../../services';
 import { AxiosError } from 'axios';
 
 const TableSection = () => {
@@ -27,8 +27,20 @@ const TableSection = () => {
     }
   };
 
+  const fetchTransactionsByDate = async (date: string): Promise<void> => {
+    try {
+      const transactions = await getTransactionsByDate(date, user.token);
+      setTransactions(transactions);
+    } catch (err: unknown) {
+      if (err instanceof AxiosError) {
+        setError(true);
+        setErrorMessage(err.response?.data.message);
+      }
+    }
+  };
+
   useEffect(() => {
-    if (user.token && user.token !== '') {
+    if (user.token !== '') {
       getTransactions(transactionType, user.token)
         .then((data) => setTransactions(data))
         .catch((err) => {
@@ -38,7 +50,7 @@ const TableSection = () => {
           }
         });
     }
-  }, []);
+  }, [user]);
 
   return (
     <Container>
@@ -52,7 +64,10 @@ const TableSection = () => {
           <input
             type="date"
             value={date}
-            onChange={({ target }) => setDate(target.value)}
+            onChange={({ target }) => {
+              setDate(target.value);
+              fetchTransactionsByDate(target.value);
+            }}
           />
         </label>
         {error && (

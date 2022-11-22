@@ -1,6 +1,10 @@
+import { useContext } from 'react';
+import { userContext } from '../../context/userContext';
+import TransactionTableRow from '../TransactionTableRow';
 import { Container, Table } from './style';
 
 const TransactionsTable = () => {
+  const { transactions } = useContext(userContext);
   return (
     <Container>
       <div className="table-head">
@@ -18,12 +22,16 @@ const TransactionsTable = () => {
       <div className="table-body">
         <Table>
           <tbody>
-            <tr>
-              <td>100</td>
-              <td>rivaldo</td>
-              <td>maciel</td>
-              <td className="transaction-date">25/09/2022</td>
-            </tr>
+            {
+              transactions.map((transaction) => (
+                <TransactionTableRow
+                  value={transaction.value}
+                  debitedUserName={transaction.debitedUserName}
+                  creditedUserName={transaction.creditedUserName}
+                  date={transaction.createdAt}
+                />
+              ))
+            }
           </tbody>
         </Table>
       </div>
