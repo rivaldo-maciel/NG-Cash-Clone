@@ -1,4 +1,4 @@
-# NG-test
+# NG-Cash-Clone
 
 ## ⚙️ Como rodar o projeto
 - Para abrir o projeto é necessário ter o [Docker](https://www.docker.com/) instalado em sua máquina.
